@@ -3,21 +3,18 @@ from usfm_grammar import USFMParser, Filter
 import sys
 import os
 from colorama import init, Fore, Back
+import pathlib
 
 async def usfm_to_json(input_usfm: str):
     "usfm to json with grammar"
     usfm_parser = USFMParser(input_usfm)
-    print('1')
     output_content = usfm_parser.to_usj(include_markers=Filter.BCV+Filter.TEXT)
-    print('2')
     return output_content
 
 
 async def usj_to_usfm(usj_obj):
     "usj to usfm"
-    print("3")
     converted_usfm = USFMParser(from_usj=usj_obj)
-    print("4")
     return converted_usfm.usfm
 
 
@@ -40,19 +37,20 @@ async def main():
             print(Fore.RED + Back.LIGHTWHITE_EX + "Filename arguments is not provided, please try : python3 main.py <fileName.usfm> ")
             return
 
+        # create out directory
+        pathlib.Path("out").mkdir(parents=True, exist_ok=True)
+
         for file in filenames:
             if os.path.isfile(os.path.join("source", file)):
-                print(Fore.LIGHTGREEN_EX + "file Found. Started Processing. Please wait...")
+                print(Fore.LIGHTGREEN_EX + f"file {file} Found. Started Processing. Please wait...")
                 usfm_content: str = ''
                 # reading usfm
-                # with open('source/TIT.usfm') as f:
-                #     usfm_content = f.read()
-                
-                # parsed_usj = await usfm_to_json(usfm_content)
-                # usfm_from_usj = await usj_to_usfm(parsed_usj)
-                # print("5")
-                # usfm_obj = open("out/TIT.usfm", 'w', encoding = "utf-8")
-                # usfm_obj.write(usfm_from_usj)
+                with open(os.path.join("source", file)) as f:
+                    usfm_content = f.read()
+                parsed_usj = await usfm_to_json(usfm_content)
+                usfm_from_usj = await usj_to_usfm(parsed_usj)
+                usfm_obj = open(os.path.join("out", file), 'w', encoding = "utf-8")
+                usfm_obj.write(usfm_from_usj)
                 print(Fore.GREEN + f"Completed Processing : {file}")
             else:
                 print(Fore.RED + Back.LIGHTWHITE_EX + f"File : {file} not exist in source directory.")

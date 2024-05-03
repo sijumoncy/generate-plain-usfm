@@ -39,6 +39,7 @@ pip install -r requirements.txt
 - Once the file is processed , it will be available in the `out` directory
 
 - open terminal in the root directory
+- use python3 for `linux` and python for `windows`
 
 **Process single file**
 
