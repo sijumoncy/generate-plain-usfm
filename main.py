@@ -24,29 +24,31 @@ async def main():
     "main entry"
     try:
         args = sys.argv
-        filename = ''
+        print("args : ", args)
+        filenames = []
 
         if len(args) > 1:
-            filename = args[1]
+            filenames = args[1:]
         else:
             print("Filename arguments is not provided, please try : python3 main.py <fileName.usfm> ")
             return
 
-        if os.path.isfile(f'source/{filename}'):
-            print("file Found. Started Processing. Please wait...")
-            usfm_content: str = ''
-            # reading usfm
-            # with open('source/TIT.usfm') as f:
-            #     usfm_content = f.read()
-            
-            # parsed_usj = await usfm_to_json(usfm_content)
-            # usfm_from_usj = await usj_to_usfm(parsed_usj)
-            # print("5")
-            # usfm_obj = open("out/TIT.usfm", 'w', encoding = "utf-8")
-            # usfm_obj.write(usfm_from_usj)
-            print(f"Completed Processing.Check the output in out/{filename}")
-        else:
-            print(f"File : {filename} not exist in source directory.")
+        for file in filenames:
+            if os.path.isfile(f'source/{file}'):
+                print("file Found. Started Processing. Please wait...")
+                usfm_content: str = ''
+                # reading usfm
+                # with open('source/TIT.usfm') as f:
+                #     usfm_content = f.read()
+                
+                # parsed_usj = await usfm_to_json(usfm_content)
+                # usfm_from_usj = await usj_to_usfm(parsed_usj)
+                # print("5")
+                # usfm_obj = open("out/TIT.usfm", 'w', encoding = "utf-8")
+                # usfm_obj.write(usfm_from_usj)
+                print(f"Completed Processing.Check the output in out/{file}")
+            else:
+                print(f"File : {file} not exist in source directory.")
     except Exception as e:
         print("Error during processing : ", e)
 
