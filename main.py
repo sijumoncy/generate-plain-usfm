@@ -2,7 +2,7 @@ import asyncio
 from usfm_grammar import USFMParser, Filter
 import sys
 import os
-import glob
+from colorama import init, Fore, Back
 
 async def usfm_to_json(input_usfm: str):
     "usfm to json with grammar"
@@ -24,8 +24,10 @@ async def usj_to_usfm(usj_obj):
 async def main():
     "main entry"
     try:
+        # init coloroma
+        init(autoreset=True)
+
         args = sys.argv
-        print("args : ", args)
         filenames = []
 
         if len(args) > 1:
@@ -35,12 +37,12 @@ async def main():
             else: 
                 filenames = args[1:]
         else:
-            print("Filename arguments is not provided, please try : python3 main.py <fileName.usfm> ")
+            print(Fore.RED + Back.LIGHTWHITE_EX + "Filename arguments is not provided, please try : python3 main.py <fileName.usfm> ")
             return
 
         for file in filenames:
             if os.path.isfile(os.path.join("source", file)):
-                print("file Found. Started Processing. Please wait...")
+                print(Fore.LIGHTGREEN_EX + "file Found. Started Processing. Please wait...")
                 usfm_content: str = ''
                 # reading usfm
                 # with open('source/TIT.usfm') as f:
@@ -51,13 +53,13 @@ async def main():
                 # print("5")
                 # usfm_obj = open("out/TIT.usfm", 'w', encoding = "utf-8")
                 # usfm_obj.write(usfm_from_usj)
-                print(f"Completed Processing : {file}")
+                print(Fore.GREEN + f"Completed Processing : {file}")
             else:
-                print(f"File : {file} not exist in source directory.")
-            print("-----------------------------------------------------------------------------------")
+                print(Fore.RED + Back.LIGHTWHITE_EX + f"File : {file} not exist in source directory.")
+            print(Fore.CYAN + "-----------------------------------------------------------------------------------------------------")
         print("Processing Completed. Check /out for the files")
     except Exception as e:
-        print("Error during processing : ", e)
+        print(Fore.RED + Back.LIGHTWHITE_EX + "Error during processing : ", e)
 
     
 
